@@ -1,0 +1,30 @@
+spring:
+    application:
+        name: calendar
+    datasource:
+        url: jdbc:mariadb://localhost:3306/distributor?connectTimeout=2000&socketTimeout=5000
+        # url: jdbc:mariadb:replication://database-source:3306,database-replica:3306/kamiodagamesid?connectTimeout=2000&socketTimeout=5000
+        username: root
+        password: root
+    jpa:
+        hibernate:
+            ddl-auto: none # DBには適用しない（ファイル出力だけにする）
+        properties:
+            javax:
+                persistence:
+                    schema-generation:
+                        scripts:
+                            action: create
+                            create-target: target/sql/create.sql
+                            drop-target: target/sql/drop.sql
+mail:
+    smtp:
+        host: your_host
+        port: 465
+        ssl: true
+    user:
+        name: your_username
+        password: your_password
+    from:
+        address: your_email@example.com
+        name: Your Name

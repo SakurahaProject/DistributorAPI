@@ -1,0 +1,170 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Arisu Home Page API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://sakurahaarisu.net/api/v1",
+            "description": "Production server"
+        }
+    ],
+    "paths": {
+        "/profile": {
+            "get": {
+                "summary": "Get profile",
+                "responses": {
+                    "200": {
+                        "description": "A profile object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "column": {
+                                                "type": "string",
+                                                "description": "プロフィールの項目名"
+                                            },
+                                            "content": {
+                                                "type": "string",
+                                                "description": "プロフィールの内容"
+                                            }
+                                        }
+                                    },
+                                    "required": ["column", "content"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/message": {
+            "post": {
+                "summary": "Post a message",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Name of the sender"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "description": "The message content"
+                                    }
+                                },
+                                "required": ["name", "message"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Message received successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/schedule": {
+            "get": {
+                "summary": "Get schedules",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}"
+                        },
+                        "description": "Date for which to retrieve schedules"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of schedules",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "schedules": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "date": {
+                                                            "type": "string",
+                                                            "format": "date",
+                                                            "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}"
+                                                        },
+                                                        "schedule": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": ["date", "schedule"]
+                                                }
+                                            },
+                                            "memo": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": ["schedules"]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid date format"
+                    }
+                }
+            }
+        },
+        "/link": {
+            "get": {
+                "summary": "Get Site Links",
+                "responses": {
+                    "200": {
+                        "description": "A list of site links",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "site": {
+                                                "type": "string",
+                                                "description": "Site name"
+                                            },
+                                            "url": {
+                                                "type": "string",
+                                                "description": "Site URL"
+                                            }
+                                        },
+                                        "required": ["site", "url"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
