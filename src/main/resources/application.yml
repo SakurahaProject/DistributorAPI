@@ -2,7 +2,7 @@ spring:
     application:
         name: calendar
     datasource:
-        url: jdbc:mariadb://localhost:3306/distributor?connectTimeout=2000&socketTimeout=5000
+        url: jdbc:mariadb://database:3306/distributor?connectTimeout=2000&socketTimeout=5000
         # url: jdbc:mariadb:replication://database-source:3306,database-replica:3306/kamiodagamesid?connectTimeout=2000&socketTimeout=5000
         username: root
         password: root
