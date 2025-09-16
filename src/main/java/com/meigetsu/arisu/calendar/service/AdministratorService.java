@@ -21,4 +21,8 @@ public class AdministratorService {
         administratorRepository.save(newAdmin);
         return id;
     }
+
+    public void delete(String id) {
+        administratorRepository.deleteById(id);
+    }
 }

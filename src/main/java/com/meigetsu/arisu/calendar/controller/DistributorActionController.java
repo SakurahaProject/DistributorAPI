@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -55,6 +56,28 @@ public class DistributorActionController {
         } finally {
             Log.access(admin == null ? "Unknown" : admin.getId(), "/distributor/administrator",
                     "Attempted to add administrator");
+        }
+    }
+
+    @DeleteMapping("/distributor/administrator/{id}")
+    public ResponseEntity<?> deleteAdministrator(@RequestHeader("Authorization") String currentAdminAccessKey,
+            @PathVariable String id) {
+        Administrator admin = null;
+        try {
+            admin = accessKeyService.validate(currentAdminAccessKey);
+            if (admin == null) {
+                Log.error("Unknown", "/distributor/administrator", "Invalid access key:" + currentAdminAccessKey);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            administratorService.delete(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            Log.error(admin == null ? "Unknown" : admin.getId(), "/distributor/administrator",
+                    "Failed to delete administrator: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } finally {
+            Log.access(admin == null ? "Unknown" : admin.getId(), "/distributor/administrator",
+                    "Attempted to delete administrator");
         }
     }
 
