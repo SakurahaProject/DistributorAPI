@@ -37,7 +37,7 @@ public class DistributorActionController {
     @Autowired
     private SiteLinkService siteLinkService;
 
-    @PostMapping("/distributor/administrator")
+    @PostMapping("/administrator")
     public ResponseEntity<?> addAdministrator(@RequestHeader("Authorization") String currentAdminAccessKey,
             @RequestBody CreateAdministrator newAdmin) {
         Administrator admin = null;
@@ -59,7 +59,7 @@ public class DistributorActionController {
         }
     }
 
-    @DeleteMapping("/distributor/administrator/{id}")
+    @DeleteMapping("/administrator/{id}")
     public ResponseEntity<?> deleteAdministrator(@RequestHeader("Authorization") String currentAdminAccessKey,
             @PathVariable String id) {
         Administrator admin = null;
@@ -81,7 +81,7 @@ public class DistributorActionController {
         }
     }
 
-    @PostMapping("/distributor/administrator/authorization")
+    @PostMapping("/administrator/authorization")
     public ResponseEntity<?> issueAdministratorAccessKey(
             @RequestHeader("Authorization") String basicAuthorizationHeader) {
         try {
@@ -113,7 +113,7 @@ public class DistributorActionController {
         }
     }
 
-    @DeleteMapping("/distributor/administrator/authorization")
+    @DeleteMapping("/administrator/authorization")
     public ResponseEntity<?> revokeAdministratorAccessKey(
             @RequestHeader("Authorization") String accessKey) {
         Administrator admin = null;
@@ -135,7 +135,7 @@ public class DistributorActionController {
         }
     }
 
-    @PostMapping("/distributor/profile")
+    @PostMapping("/profile")
     public ResponseEntity<?> editProfile(@RequestHeader("Authorization") String adminAccessKey,
             @RequestBody List<Profile> newProfiles) {
         Administrator admin = null;
@@ -157,7 +157,7 @@ public class DistributorActionController {
         }
     }
 
-    @PostMapping("/distributor/schedule")
+    @PostMapping("/schedule")
     public ResponseEntity<?> editSchedule(@RequestHeader("Authorization") String adminAccessKey,
             @RequestBody List<Schedule> newSchedules) {
         Administrator admin = null;
@@ -181,9 +181,9 @@ public class DistributorActionController {
         }
     }
 
-    @PostMapping("/distributor/link")
+    @PostMapping("/link")
     public ResponseEntity<?> editSiteLink(@RequestHeader("Authorization") String adminAccessKey,
-            @RequestBody List<com.meigetsu.arisu.calendar.model.SiteLink> newSiteLinks) {
+            @RequestBody List<SiteLink> newSiteLinks) {
         Administrator admin = null;
         try {
             admin = accessKeyService.validate(adminAccessKey);
