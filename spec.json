@@ -1,19 +1,30 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Arisu Home Page API",
+        "title": "Vtuber Profile Home Page API",
         "version": "1.0.0"
     },
     "servers": [
         {
-            "url": "https://sakurahaarisu.net/api/v1",
+            "url": "https://<input self domain>/api/v1",
             "description": "Production server"
+        }
+    ],
+    "tags": [
+        {
+            "name": "user",
+            "description": "Enable to access by all users"
+        },
+        {
+            "name": "distributor_only",
+            "description": "Enable to access by distributors only"
         }
     ],
     "paths": {
         "/profile": {
             "get": {
                 "summary": "Get profile",
+                "tags": ["user"],
                 "responses": {
                     "200": {
                         "description": "A profile object",
@@ -40,11 +51,63 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "summary": "Update profile",
+                "description": "Update profile information. If column is contained in the request body and server has it, update it. If not, add it. If column is not contained in the request body and server has it, delete it.",
+                "tags": ["distributor_only"],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer token for authentication"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "column": {
+                                            "type": "string",
+                                            "description": "プロフィールの項目名"
+                                        },
+                                        "content": {
+                                            "type": "string",
+                                            "description": "プロフィールの内容"
+                                        }
+                                    },
+                                    "required": ["column", "content"]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile updated successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "403": {
+                        "description": "Access forbidden"
+                    }
+                }
             }
         },
         "/message": {
             "post": {
                 "summary": "Post a message",
+                "tags": ["user"],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -79,6 +142,7 @@
         "/schedule": {
             "get": {
                 "summary": "Get schedules",
+                "tags": ["user"],
                 "parameters": [
                     {
                         "name": "date",
@@ -133,6 +197,59 @@
                         "description": "Invalid date format"
                     }
                 }
+            },
+            "post": {
+                "summary": "Add a schedule",
+                "tags": ["distributor_only"],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer token for authentication"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}",
+                                        "description": "Date of the schedule"
+                                    },
+                                    "schedule": {
+                                        "type": "string",
+                                        "description": "The schedule content"
+                                    },
+                                    "icon": {
+                                        "type": "integer",
+                                        "description": "Optional icon ID for the schedule"
+                                    }
+                                },
+                                "required": ["date", "schedule"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Schedule added successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "403": {
+                        "description": "Access forbidden"
+                    }
+                }
             }
         },
         "/link": {
@@ -162,6 +279,56 @@
                                 }
                             }
                         }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Update Site Links",
+                "tags": ["distributor_only"],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer token for authentication"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "site": {
+                                            "type": "string",
+                                            "description": "Site name"
+                                        },
+                                        "url": {
+                                            "type": "string",
+                                            "description": "Site URL"
+                                        }
+                                    },
+                                    "required": ["site", "url"]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Site links updated successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "403": {
+                        "description": "Access forbidden"
                     }
                 }
             }
