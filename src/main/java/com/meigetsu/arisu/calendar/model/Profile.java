@@ -26,7 +26,7 @@ public class Profile {
     @Column(name = "Column")
     @JsonProperty("column")
     private String column;
-    @Column(name = "Content")
+    @Column(name = "Content", columnDefinition = "TEXT")
     @JsonProperty("content")
     private String content;
 
@@ -40,5 +40,9 @@ public class Profile {
 
     public boolean contentIsEmpty() {
         return content == null || content.isEmpty();
+    }
+
+    public boolean matchColumn(Profile other) {
+        return this.column.equals(other.column);
     }
 }

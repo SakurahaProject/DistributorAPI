@@ -145,9 +145,7 @@ public class DistributorActionController {
                 Log.error("Unknown", "/distributor/profile", "Invalid access key:" + adminAccessKey);
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
-            for (Profile newProfile : newProfiles) {
-                profileService.appendOrUpdateProfile(newProfile);
-            }
+            profileService.appendOrUpdateProfile(newProfiles.stream());
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             Log.error(admin == null ? "Unknown" : admin.getId(), "/distributor/profile",

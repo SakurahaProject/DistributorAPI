@@ -1,6 +1,7 @@
 package com.meigetsu.arisu.calendar.service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,19 +18,14 @@ public class ProfileService {
         return profileRepository.findAll();
     }
 
-    public void appendOrUpdateProfile(Profile profile) {
-        Profile current = profileRepository.findByColumn(profile.getColumn()).orElse(null);
-        if (current == null) {
-            if (!profile.contentIsEmpty())
-                profileRepository.save(profile);
-        } else {
-            if (profile.contentIsEmpty()) {
-                profileRepository.delete(current);
-            } else {
-                Profile existing = current;
-                existing.setContent(profile);
-                profileRepository.save(existing);
-            }
-        }
+    public void appendOrUpdateProfile(Stream<Profile> profile) {
+        Stream<Profile> current = profileRepository.findAll().stream();
+        List<Profile> appendTarget = profile
+                .filter(np -> current.noneMatch(cp -> cp.matchColumn(np)) && !np.contentIsEmpty()).toList();
+        List<Profile> updateTarget = profile.filter(np -> current.anyMatch(cp -> cp.matchColumn(np))).toList();
+        List<Profile> delTarget = current.filter(p -> profile.noneMatch(np -> np.matchColumn(p))).toList();
+        profileRepository.deleteAll(delTarget);
+        profileRepository.saveAll(updateTarget);
+        profileRepository.saveAll(appendTarget);
     }
 }
