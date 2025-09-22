@@ -31,6 +31,9 @@ public class Schedule {
     @Column(name = "Schedule", nullable = false, columnDefinition = "TEXT")
     @JsonProperty("schedule")
     private String schedule;
+    @Column(name = "Icon", nullable = true)
+    @JsonProperty("icon")
+    private Integer iconId;
 
     public LocalDate getDate() {
         return date;
