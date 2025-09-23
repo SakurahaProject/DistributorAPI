@@ -37,7 +37,7 @@ public class DistributorActionController {
     @Autowired
     private SiteLinkService siteLinkService;
 
-    @PostMapping("/administrator")
+    @PostMapping("/administrator/management")
     public ResponseEntity<?> addAdministrator(@RequestHeader("Authorization") String currentAdminAccessKey,
             @RequestBody CreateAdministrator newAdmin) {
         Administrator admin = null;
@@ -59,7 +59,7 @@ public class DistributorActionController {
         }
     }
 
-    @DeleteMapping("/administrator/{id}")
+    @DeleteMapping("/administrator/management/{id}")
     public ResponseEntity<?> deleteAdministrator(@RequestHeader("Authorization") String currentAdminAccessKey,
             @PathVariable String id) {
         Administrator admin = null;

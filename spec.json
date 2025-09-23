@@ -21,6 +21,154 @@
         }
     ],
     "paths": {
+        "/administrator/management": {
+            "post": {
+                "summary": "Add an administrator",
+                "tags": ["distributor_only"],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer token for authentication"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "Email of the new administrator"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "description": "Password for the new administrator"
+                                    }
+                                },
+                                "required": ["email", "password"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Administrator added successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "403": {
+                        "description": "Access forbidden"
+                    }
+                }
+            }
+        },
+        "/administrator/management/{id}": {
+            "delete": {
+                "summary": "Delete an administrator",
+                "tags": ["distributor_only"],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer token for authentication"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "User ID of the administrator to delete"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Administrator deleted successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "403": {
+                        "description": "Access forbidden"
+                    }
+                }
+            }
+        },
+        "/administrator/authorization": {
+            "post": {
+                "summary": "Administrator login",
+                "tags": ["distributor_only"],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Basic auth with userid and password"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login successful, returns access token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "description": "Bearer token for authentication"
+                                        }
+                                    },
+                                    "required": ["access_token"]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Administrator logout",
+                "tags": ["distributor_only"],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer token for authentication"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Logout successful"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
         "/profile": {
             "get": {
                 "summary": "Get profile",
