@@ -25,7 +25,7 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.UUID)
     @JsonIgnore
     private String id;
-    @Column(name = "Date", nullable = false, unique = true, columnDefinition = "DATE")
+    @Column(name = "BroadcastDate", nullable = false, unique = true, columnDefinition = "DATE")
     @JsonProperty("date")
     private LocalDate date;
     @Column(name = "Schedule", nullable = false, columnDefinition = "TEXT")
