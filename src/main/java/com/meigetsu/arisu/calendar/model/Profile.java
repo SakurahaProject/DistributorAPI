@@ -23,7 +23,7 @@ public class Profile {
     @Column(name = "ID", nullable = false, unique = true)
     @JsonIgnore
     private Long id;
-    @Column(name = "Column")
+    @Column(name = "ContentColumn")
     @JsonProperty("column")
     private String column;
     @Column(name = "Content", columnDefinition = "TEXT")
