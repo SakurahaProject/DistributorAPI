@@ -24,7 +24,7 @@ import jakarta.validation.constraints.Pattern;
 public class Administrator {
     @Id
     @Column(name = "ID", unique = true, nullable = false, length = 8)
-    @Pattern(regexp = "^a[1-9][0-9]{6}")
+    @Pattern(regexp = "^a[0-9]{6}$", message = "Invalid administrator ID format")
     private String id;
     @Column(name = "MailAddress", nullable = false, unique = true)
     private String mailAddress;
@@ -44,6 +44,7 @@ public class Administrator {
         this.id = id;
         this.mailAddress = mailAddress;
         this.password = HashUtils.Password(password);
+        this.createdAt = LocalDateTime.now();
     }
 
     public String getId() {
